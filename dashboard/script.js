@@ -41,4 +41,7 @@ function renderTable(data) {
 }
 
 loadData();
+// Auto Refresh every 5 minutes
+setInterval(loadData, 5 * 60 * 1000);
+
 
