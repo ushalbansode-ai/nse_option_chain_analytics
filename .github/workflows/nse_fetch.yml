@@ -1,0 +1,32 @@
+name: NSE Fetch & Analytics
+
+on:
+  schedule:
+    - cron: "*/5 3-9 * * 1-5"   # Every 5 min during Indian market hours (9:00–15:30 IST)
+  workflow_dispatch:           # Manual trigger
+
+jobs:
+  run-nse-fetcher:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run real NSE fetch
+        run: python examples/real_fetch_example.py
+
+      - name: Upload results
+        uses: actions/upload-artifact@v4
+        with:
+          name: output
+          path: data/
+          
