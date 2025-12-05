@@ -41,17 +41,28 @@ def compute_oi_differences(df):
     return pivot
     
 
-def compute_oi_magnets_and_gaps(df, spot, band=1000, gap_threshold=0.3):
-    df = df.copy()
-    df["distance"] = (df["strike"] - spot).abs()
-    df = df[df["distance"] <= band]
+def compute_oi_magnets_and_gaps(df, spot):
+    # Ensure required OI columns exist
+    for col in ["oi_CE", "oi_PE"]:
+        if col not in df.columns:
+            df[col] = 0
 
+    # Create total_oi
+    df["total_oi"] = df["oi_CE"] + df["oi_PE"]
+
+    # Distance from spot/ATM
+    df["distance"] = (df["strike"] - spot).abs()
+
+    # Magnet score: large OI near spot pulls price
     df["magnet_score"] = df["total_oi"] / (df["distance"] + 1)
 
-    magnets = df.sort_values("magnet_score", ascending=False).head(10)
+    magnets = df.sort_values("magnet_score", ascending=False)
 
-    median_oi = df["total_oi"].median()
-    gaps = df[df["total_oi"] < median_oi * gap_threshold]
+    # OI gaps: sudden jump in OI by strike
+    df["oi_diff_strike"] = df["total_oi"].diff().abs()
+
+    gaps = df.sort_values("oi_diff_strike", ascending=False)
 
     return magnets, gaps
+    
   
