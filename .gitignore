@@ -8,10 +8,14 @@ venv/
 env/
 
 # Data
-data/
-*.csv
+# Ignore EVERYTHING inside data/
+data/*
+
+# Allow only CSV files inside data/
+!data/*.csv
+
+# If you want to allow parquet files too, remove following line
 *.parquet
 
 # Jupyter
 .ipynb_checkpoints/
-
