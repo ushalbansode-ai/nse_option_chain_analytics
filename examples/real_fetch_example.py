@@ -127,6 +127,23 @@ def main():
         process_symbol(sym)
 
     print("\n🎯 Completed real-time fetch + signal generation.")
+        # ==============================
+    #  SAVE SIGNALS TO CSV
+    # ==============================
+    out_dir = "signals"
+    os.makedirs(out_dir, exist_ok=True)
+
+    signals_path = os.path.join(out_dir, "signals.csv")
+
+    df_signals = pd.DataFrame(all_signals)
+
+    if not df_signals.empty:
+        df_signals.to_csv(signals_path, index=False)
+        print(f"✔ signals saved → {signals_path}")
+    else:
+        print("⚠ No signals → writing empty CSV")
+        df_signals.to_csv(signals_path, index=False)
+        
 
 
 if __name__ == "__main__":
