@@ -121,6 +121,7 @@ def process_symbol(symbol):
 # Main
 # -----------------------------
 def main():
+    all_signals = []
     symbols = ["NIFTY", "BANKNIFTY"]
 
     for sym in symbols:
