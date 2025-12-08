@@ -1,5 +1,5 @@
-pandas>=1.5.0
-numpy
-matplotlib
-jupyter
+pandas
+cloudscraper
+requests
+
 
